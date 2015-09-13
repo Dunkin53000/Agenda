@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:descendantFocusability="beforeDescendants">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingRight="15dp"
+        android:background="@drawable/card_background_selector"
+        android:descendantFocusability="afterDescendants">
+
+        <TextView
+            android:id="@+id/courstext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cours"
+            android:layout_gravity="center_horizontal"
+            android:textSize="30dp" />
+
+        <FrameLayout
+            android:layout_marginRight="16dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp">
+
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/imageView"
+                android:layout_gravity="left|center_vertical" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/salletext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Salle"
+            android:layout_gravity="right" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/horairetext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Horaire"
+        android:layout_gravity="center"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp" />
+
+</FrameLayout>

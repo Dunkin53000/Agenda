@@ -1,11 +1,13 @@
 package com.moovin.agenda;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.moovin.agenda.Adapter.CardArrayAdapter;
@@ -35,6 +37,20 @@ public class Semaine1FragmentTab extends Fragment {
 
         listView.addHeaderView(new View(getActivity()));
         listView.addFooterView(new View(getActivity()));
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1,int position, long arg3)
+            {
+
+                Intent myIntent = new Intent(getActivity(), JourActivity.class);
+                getActivity().startActivity(myIntent);
+
+            }
+        });
+
+
 
         cardArrayAdapter = new CardArrayAdapter(getActivity(), R.layout.list_item_card);
 

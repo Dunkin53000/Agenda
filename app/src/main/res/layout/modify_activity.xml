@@ -11,57 +11,14 @@
         android:layout_width="match_parent"
         />
 
-    <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <ListView
+        android:id="@+id/card_listViewCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:descendantFocusability="beforeDescendants">
-
-    </FrameLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:paddingRight="15dp"
-        android:background="@drawable/card_background_selector"
-        android:descendantFocusability="afterDescendants"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
-
-        <TextView
-            android:id="@+id/courstext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cours n°1"
-            android:layout_gravity="center_horizontal"
-            android:textSize="30dp" />
-
-        <FrameLayout
-            android:layout_marginRight="16dp"
-            android:layout_width="75dp"
-            android:layout_height="75dp">
-
-            <ImageView
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:id="@+id/imageView"
-                android:layout_gravity="left|center_vertical" />
-        </FrameLayout>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ajouter ce cours"
-            android:id="@+id/button"
-            android:layout_gravity="center_horizontal" />
-
-
-    </LinearLayout>
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:layout_below="@+id/tool_bar"
+        android:divider="@null"
+        android:dividerHeight="10dp" />
 
 </RelativeLayout>

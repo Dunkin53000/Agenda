@@ -44,6 +44,15 @@ public class CardArrayAdapterJour extends ArrayAdapter<CardJour> {
     public void add(CardJour object) {
         cardList.add(object);
         super.add(object);
+        notifyDataSetChanged();
+    }
+
+
+    @Override
+    public void remove(CardJour object) {
+        cardList.remove(object);
+        super.remove(object);
+        notifyDataSetChanged();
     }
 
     @Override

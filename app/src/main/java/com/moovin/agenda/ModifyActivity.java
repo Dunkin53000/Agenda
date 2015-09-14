@@ -1,14 +1,20 @@
 package com.moovin.agenda;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+
+import com.moovin.agenda.Adapter.CardArrayAdapterJour;
+import com.moovin.agenda.Utils.SharedPreference;
 
 import me.tittojose.www.timerangepicker_library.TimeRangePickerDialog;
 
@@ -22,6 +28,11 @@ public class ModifyActivity extends ActionBarActivity implements TimeRangePicker
     String horairetextdebut = "";
     String horairetextfin = "";
     public static final String TIMERANGEPICKER_TAG = "timerangepicker";
+    SharedPreference sharedPreference;
+
+    private static final String TAG = "CardListActivity";
+    private CardArrayAdapterJour cardArrayAdapter;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +40,21 @@ public class ModifyActivity extends ActionBarActivity implements TimeRangePicker
         setContentView(R.layout.modify_activity);
 
 
+        sharedPreference = new SharedPreference();
+        listView = (ListView) findViewById(R.id.card_listViewCard);
+
+        listView.addHeaderView(new View(this));
+        View footerView = ((LayoutInflater) ModifyActivity.this.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_modify, null, false);
+        listView.addFooterView(footerView);
+
+        cardArrayAdapter = new CardArrayAdapterJour(this, R.layout.list_item_cardjour);
 
 
+
+
+
+
+        listView.setAdapter(cardArrayAdapter);
 
         Button button= (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +151,22 @@ public class ModifyActivity extends ActionBarActivity implements TimeRangePicker
         Log.d("Cours", classtext);
         Log.d("Salle", salletext);
         Log.d("Horaires", "Debut : " + horairetextdebut + " Fin : " + horairetextfin);
+
+
+
+        save();
+
+
+    }
+
+    public void save(){
+
+
+
+        CardJour card = new CardJour(classtext, "Debut : " + horairetextdebut + " Fin : " + horairetextfin, salletext);
+        cardArrayAdapter.add(card);
+        cardArrayAdapter.notifyDataSetChanged();
+        sharedPreference.addFavorite(ModifyActivity.this,card,"Jour");
 
     }
 }

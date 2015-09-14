@@ -1,20 +1,23 @@
 package com.moovin.agenda;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.moovin.agenda.Adapter.CardArrayAdapterJour;
 import com.moovin.agenda.Utils.SharedPreference;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import me.tittojose.www.timerangepicker_library.TimeRangePickerDialog;
 
@@ -29,10 +32,13 @@ public class ModifyActivity extends ActionBarActivity implements TimeRangePicker
     String horairetextfin = "";
     public static final String TIMERANGEPICKER_TAG = "timerangepicker";
     SharedPreference sharedPreference;
+    List<CardJour> favorites = new ArrayList<CardJour>();
+
 
     private static final String TAG = "CardListActivity";
     private CardArrayAdapterJour cardArrayAdapter;
     private ListView listView;
+    String key ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,40 +47,80 @@ public class ModifyActivity extends ActionBarActivity implements TimeRangePicker
 
 
         sharedPreference = new SharedPreference();
-        listView = (ListView) findViewById(R.id.card_listViewCard);
-
-        listView.addHeaderView(new View(this));
-        View footerView = ((LayoutInflater) ModifyActivity.this.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_modify, null, false);
-        listView.addFooterView(footerView);
-
-        cardArrayAdapter = new CardArrayAdapterJour(this, R.layout.list_item_cardjour);
+        final Bundle extras = getIntent().getExtras();
+        key = extras.getString("JOUR");
+        favorites = sharedPreference.getFavorites(ModifyActivity.this,extras.getString("JOUR"));
 
 
+        if (favorites == null) {
 
+        } else {
 
-
-
-        listView.setAdapter(cardArrayAdapter);
-
-        Button button= (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                doask();
-
-
+            if (favorites.size() == 0) {
 
 
             }
+
+
+            listView = (ListView) findViewById(R.id.card_listViewCard);
+
+
+
+
+            listView.addHeaderView(new View(this));
+            listView.addFooterView(new View(this));
+            if (favorites != null) {
+                cardArrayAdapter = new CardArrayAdapterJour(this, R.layout.list_item_cardjour, favorites);
+                listView.setAdapter(cardArrayAdapter);
+
+
+                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+
+                        sharedPreference.removeFavorite(ModifyActivity.this,favorites.get(position - 1),key);
+                        Toast.makeText(ModifyActivity.this, "Supprimé des favoris", Toast.LENGTH_SHORT).show();
+                        cardArrayAdapter.remove(favorites.get(position - 1));
+                        sharedPreference.saveFavorites(ModifyActivity.this, favorites,key);
+                        cardArrayAdapter.notifyDataSetChanged();
+
+                        actualise();
+
+                        return true;
+                    }
+                });
+
+
+            }
+
+
+
+
+        }
+
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab2);
+        fab.attachToListView(listView);
+        fab.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                doask();
+            }
         });
-
-
-
-
 
     }
 
+
+    public void actualise(){
+
+        cardArrayAdapter.notifyDataSetChanged();
+        cardArrayAdapter = new CardArrayAdapterJour(this, R.layout.list_item_cardjour, favorites);
+        cardArrayAdapter.notifyDataSetChanged();
+        listView.setAdapter(cardArrayAdapter);
+
+    }
 
     public void doask() {
 
@@ -163,10 +209,11 @@ public class ModifyActivity extends ActionBarActivity implements TimeRangePicker
 
 
 
-        CardJour card = new CardJour(classtext, "Debut : " + horairetextdebut + " Fin : " + horairetextfin, salletext);
-        cardArrayAdapter.add(card);
-        cardArrayAdapter.notifyDataSetChanged();
-        sharedPreference.addFavorite(ModifyActivity.this,card,"Jour");
+
+        CardJour card = new CardJour(classtext,"De " + horairetextdebut + " à " + horairetextfin, salletext);
+        sharedPreference.addFavorite(ModifyActivity.this,card,key);
+        actualise();
+
 
     }
 }

@@ -8,6 +8,9 @@ import android.widget.ListView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.moovin.agenda.Adapter.CardArrayAdapterJour;
+import com.moovin.agenda.Utils.SharedPreference;
+
+import java.util.List;
 
 /**
  * Created by pierre on 13/09/2015.
@@ -18,38 +21,66 @@ public class JourActivity extends ActionBarActivity {
     private CardArrayAdapterJour cardArrayAdapter;
     private ListView listView;
 
+    SharedPreference sharedPreference;
+    List<CardJour> favorites;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.jour_activity);
 
-        listView = (ListView) findViewById(R.id.card_listViewCard);
+
+        sharedPreference = new SharedPreference();
+        final Bundle extras = getIntent().getExtras();
+
+
+
+        favorites = sharedPreference.getFavorites(JourActivity.this,extras.getString("JOUR"));
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.attachToListView(listView);
-
-       fab.setOnClickListener(new View.OnClickListener() {
-
-           @Override
-           public void onClick(View v) {
-               Intent myIntent = new Intent(getBaseContext(), ModifyActivity.class);
-               startActivity(myIntent);
-           }
-       });
-
-        listView.addHeaderView(new View(this));
-        listView.addFooterView(new View(this));
-
-        cardArrayAdapter = new CardArrayAdapterJour(this, R.layout.list_item_cardjour);
 
 
-        CardJour card = new CardJour("Maths", "10h00-15h00", "Salle: 206");
-        cardArrayAdapter.add(card);
+
+        if (favorites == null) {
+
+        } else {
+
+            if (favorites.size() == 0) {
+
+
+            }
+
+
+            listView = (ListView) findViewById(R.id.card_listViewCard);
 
 
 
 
-        listView.setAdapter(cardArrayAdapter);
+            listView.addHeaderView(new View(this));
+            listView.addFooterView(new View(this));
+            if (favorites != null) {
+                cardArrayAdapter = new CardArrayAdapterJour(this, R.layout.list_item_cardjour, favorites);
+                listView.setAdapter(cardArrayAdapter);
+
+
+            }
+        }
+
+
+
+        fab.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getBaseContext(), ModifyActivity.class);
+                myIntent.putExtra("JOUR",extras.getString("JOUR"));
+                startActivity(myIntent);
+            }
+        });
+
+
     }
 
 

@@ -45,6 +45,7 @@ public class Semaine1FragmentTab extends Fragment {
             {
 
                 Intent myIntent = new Intent(getActivity(), JourActivity.class);
+                myIntent.putExtra("JOUR",String.valueOf(position));
                 getActivity().startActivity(myIntent);
 
             }

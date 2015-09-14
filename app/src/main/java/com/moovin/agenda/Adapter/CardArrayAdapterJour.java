@@ -17,7 +17,6 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.moovin.agenda.CardJour;
 import com.moovin.agenda.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,24 +25,26 @@ import java.util.List;
 public class CardArrayAdapterJour extends ArrayAdapter<CardJour> {
 
     private static final String TAG = "CardArrayAdapter";
-    private List<CardJour> cardList = new ArrayList<CardJour>();
+    List<CardJour> cardList;
     private int lastPosition = -1;
 
-    static class CardViewHolder {
+    private class CardViewHolder {
         TextView cours;
         TextView horaire;
         TextView salle;
 
     }
 
-    public CardArrayAdapterJour(Context context, int textViewResourceId) {
-        super(context, textViewResourceId);
+    public CardArrayAdapterJour(Context context, int textViewResourceId,List<CardJour> cardList) {
+        super(context, textViewResourceId, cardList);
+        this.cardList = cardList;
     }
 
     @Override
     public void add(CardJour object) {
-        cardList.add(object);
+
         super.add(object);
+        cardList.add(object);
         notifyDataSetChanged();
     }
 
@@ -57,12 +58,12 @@ public class CardArrayAdapterJour extends ArrayAdapter<CardJour> {
 
     @Override
     public int getCount() {
-        return this.cardList.size();
+        return cardList.size();
     }
 
     @Override
     public CardJour getItem(int index) {
-        return this.cardList.get(index);
+        return cardList.get(index);
     }
 
     @Override

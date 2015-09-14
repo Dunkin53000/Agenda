@@ -2,8 +2,10 @@ package com.moovin.agenda;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -33,7 +35,7 @@ public class ModifyActivity extends ActionBarActivity implements TimeRangePicker
     public static final String TIMERANGEPICKER_TAG = "timerangepicker";
     SharedPreference sharedPreference;
     List<CardJour> favorites = new ArrayList<CardJour>();
-
+    Toolbar toolbar;
 
     private static final String TAG = "CardListActivity";
     private CardArrayAdapterJour cardArrayAdapter;
@@ -45,6 +47,21 @@ public class ModifyActivity extends ActionBarActivity implements TimeRangePicker
         super.onCreate(savedInstanceState);
         setContentView(R.layout.modify_activity);
 
+
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent myIntent = new Intent(ModifyActivity.this, JourActivity.class);
+                myIntent.putExtra("JOUR",key);
+                ModifyActivity.this.startActivity(myIntent);
+
+            }
+        });
 
         sharedPreference = new SharedPreference();
         final Bundle extras = getIntent().getExtras();

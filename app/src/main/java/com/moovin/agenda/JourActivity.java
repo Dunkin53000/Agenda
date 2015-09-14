@@ -3,6 +3,7 @@ package com.moovin.agenda;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
 
@@ -20,6 +21,7 @@ public class JourActivity extends ActionBarActivity {
     private static final String TAG = "CardListActivity";
     private CardArrayAdapterJour cardArrayAdapter;
     private ListView listView;
+    Toolbar toolbar;
 
     SharedPreference sharedPreference;
     List<CardJour> favorites;
@@ -30,6 +32,20 @@ public class JourActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.jour_activity);
 
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent myIntent = new Intent(JourActivity.this, MainActivity.class);
+
+                JourActivity.this.startActivity(myIntent);
+
+            }
+        });
 
         sharedPreference = new SharedPreference();
         final Bundle extras = getIntent().getExtras();
